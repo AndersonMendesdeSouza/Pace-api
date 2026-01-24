@@ -10,6 +10,8 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 import { plainToInstance } from 'class-transformer';
 import { ProductStatusEnum } from 'src/dtos/enums/product-status.enum';
 import { ProductRequestDto } from 'src/dtos/request/product-request.dto';
@@ -22,32 +24,50 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
-  @UseInterceptors(FilesInterceptor('files'))
+  @UseInterceptors(
+    FilesInterceptor('images', 10, {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, callback) => {
+          const uniqueName =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
+          callback(null, uniqueName + extname(file.originalname));
+        },
+      }),
+    }),
+  )
   async create(
     @Body() dto: ProductRequestDto,
     @UploadedFiles() files: Express.Multer.File[],
   ) {
-    const product = await this.productsService.create(dto, files);
-    console.log("Valores do meu product", dto)
-    return plainToInstance(ProductResponseDto, product);
+    return plainToInstance(
+      ProductResponseDto,
+      await this.productsService.create(dto, files),
+    );
   }
+
   @Get()
   async findAll() {
-    const products = await this.productsService.findAll();
-    console.log(products);
-    return plainToInstance(ProductResponseDto, products);
+    return plainToInstance(
+      ProductResponseDto,
+      await this.productsService.findAll(),
+    );
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    const product = await this.productsService.findOne(id);
-    return plainToInstance(ProductResponseDto, product);
+    return plainToInstance(
+      ProductResponseDto,
+      await this.productsService.findOne(id),
+    );
   }
 
   @Patch(':id')
   async update(@Param('id') id: string, @Body() dto: UpdateProductRequestDto) {
-    const product = await this.productsService.update(id, dto);
-    return plainToInstance(ProductResponseDto, product);
+    return plainToInstance(
+      ProductResponseDto,
+      await this.productsService.update(id, dto),
+    );
   }
 
   @Delete(':id')
