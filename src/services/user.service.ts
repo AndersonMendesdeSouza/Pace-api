@@ -6,9 +6,6 @@ import {
 } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ProductRequestDto } from 'src/dtos/request/product-request.dto';
-import { UpdateProductRequestDto } from 'src/dtos/request/update-product.dto';
-import { ProductStatusEnum } from 'src/dtos/enums/product-status.enum';
 import { UserEntity } from 'src/entities/user.entity';
 import { UserRequestDto } from 'src/dtos/request/user-request.dto';
 import { UserResponseDto } from 'src/dtos/response/user-response.dto';

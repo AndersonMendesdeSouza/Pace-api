@@ -2,9 +2,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
 } from 'typeorm';
-import { ProductEntity } from './product-entity';
 
 @Entity('images')
 export class ImageEntity {
@@ -20,8 +18,5 @@ export class ImageEntity {
   @Column({ default: false })
   isPrimary: boolean;
 
-  @ManyToOne(() => ProductEntity, product => product.images, {
-    onDelete: 'CASCADE',
-  })
-  product: ProductEntity;
+
 }

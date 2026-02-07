@@ -27,6 +27,7 @@ export class UsersController {
 
   @Post('/login')
   login(@Body() dto: LoginRequestDto): Promise<LoginResponseDto> {
+    console.log('Login attempt:', dto);
     return this.usersService.login(dto);
   }
 

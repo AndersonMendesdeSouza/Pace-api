@@ -1,15 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { typeOrmConfig } from './config/typeorm.config'
-import { ProductsModule } from './modules/products.module';
+import { typeOrmConfig } from './config/typeorm.config';
 import { UserModule } from './modules/user.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-          envFilePath: '.env.development',
+      envFilePath: '.env.development',
     }),
 
     TypeOrmModule.forRootAsync({
@@ -18,8 +17,7 @@ import { UserModule } from './modules/user.module';
       useFactory: typeOrmConfig,
     }),
 
-    ProductsModule,
-    UserModule
+    UserModule,
   ],
 })
 export class AppModule {}
