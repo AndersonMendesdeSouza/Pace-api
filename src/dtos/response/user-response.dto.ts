@@ -9,4 +9,10 @@ export class UserResponseDto {
 
   @Expose()
   email: string;
+
+  @Expose()
+  token?: string;
+
+  @Expose()
+  expiresIn?: number;
 }

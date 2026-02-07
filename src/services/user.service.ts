@@ -44,7 +44,16 @@ export class UserService {
 
     const savedUser = await this.repo.save(userSave);
 
-    return plainToInstance(UserResponseDto, savedUser, {
+    const payload = { sub: dto.password, email: dto.email };
+
+    const token = this.jwtService.sign(payload);
+
+    const returnData = {
+      ...savedUser,
+      token,
+      expiresIn: 60, // só informativo para o front
+    };
+    return plainToInstance(UserResponseDto, returnData, {
       excludeExtraneousValues: true,
     });
   }

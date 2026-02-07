@@ -8,13 +8,13 @@ import { UserModule } from './modules/user.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env.development',
+      envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
     }),
 
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: typeOrmConfig,
+      useFactory: (configService: ConfigService) => typeOrmConfig(configService),
     }),
 
     UserModule,

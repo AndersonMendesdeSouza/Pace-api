@@ -54,4 +54,9 @@ export class UsersController {
   ): Promise<UserResponseDto> {
     return this.usersService.update(id, dto);
   }
+
+  @Delete(':id')
+  delete(@Param('id') id: string): Promise<string> {
+    return this.usersService.remove(id);
+  }
 }
